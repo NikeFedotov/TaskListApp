@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		11B0AEF22BB03FC4008548B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B0AEF12BB03FC4008548B6 /* AppDelegate.swift */; };
 		11B0AEF42BB03FC4008548B6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B0AEF32BB03FC4008548B6 /* SceneDelegate.swift */; };
-		11B0AEF62BB03FC4008548B6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B0AEF52BB03FC4008548B6 /* ViewController.swift */; };
+		11B0AEF62BB03FC4008548B6 /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B0AEF52BB03FC4008548B6 /* TaskListViewController.swift */; };
 		11B0AEF92BB03FC4008548B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11B0AEF72BB03FC4008548B6 /* Main.storyboard */; };
 		11B0AEFC2BB03FC4008548B6 /* TaskListApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11B0AEFA2BB03FC4008548B6 /* TaskListApp.xcdatamodeld */; };
 		11B0AEFE2BB03FC6008548B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11B0AEFD2BB03FC6008548B6 /* Assets.xcassets */; };
@@ -20,7 +20,7 @@
 		11B0AEEE2BB03FC4008548B6 /* TaskListApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskListApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11B0AEF12BB03FC4008548B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11B0AEF32BB03FC4008548B6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		11B0AEF52BB03FC4008548B6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		11B0AEF52BB03FC4008548B6 /* TaskListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListViewController.swift; sourceTree = "<group>"; };
 		11B0AEF82BB03FC4008548B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		11B0AEFB2BB03FC4008548B6 /* TaskListApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskListApp.xcdatamodel; sourceTree = "<group>"; };
 		11B0AEFD2BB03FC6008548B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 			children = (
 				11B0AEF12BB03FC4008548B6 /* AppDelegate.swift */,
 				11B0AEF32BB03FC4008548B6 /* SceneDelegate.swift */,
-				11B0AEF52BB03FC4008548B6 /* ViewController.swift */,
+				11B0AEF52BB03FC4008548B6 /* TaskListViewController.swift */,
 				11B0AEF72BB03FC4008548B6 /* Main.storyboard */,
 				11B0AEFD2BB03FC6008548B6 /* Assets.xcassets */,
 				11B0AEFF2BB03FC6008548B6 /* LaunchScreen.storyboard */,
@@ -142,7 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11B0AEFC2BB03FC4008548B6 /* TaskListApp.xcdatamodeld in Sources */,
-				11B0AEF62BB03FC4008548B6 /* ViewController.swift in Sources */,
+				11B0AEF62BB03FC4008548B6 /* TaskListViewController.swift in Sources */,
 				11B0AEF22BB03FC4008548B6 /* AppDelegate.swift in Sources */,
 				11B0AEF42BB03FC4008548B6 /* SceneDelegate.swift in Sources */,
 			);
@@ -296,9 +296,9 @@
 				INFOPLIST_FILE = TaskListApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,9 +306,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = fun.swiftpractice.TaskListApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -324,9 +327,9 @@
 				INFOPLIST_FILE = TaskListApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -334,9 +337,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = fun.swiftpractice.TaskListApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
