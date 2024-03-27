@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol ITaskViewController: AnyObject {
+    func reloadData()
+}
+
 final class TaskViewController: UIViewController {
+    
+    weak var delegate: ITaskViewController?
+    
+    private let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     private lazy var taskTextField: UITextField = {
         let textField = UITextField()
@@ -57,6 +65,17 @@ private extension TaskViewController {
     }
     
     func save() {
+        let task = Task(context: viewContext)
+        task.title = taskTextField.text
+        
+        if viewContext.hasChanges {
+            do {
+                try viewContext.save()
+            } catch {
+                print(error)
+            }
+        }
+        delegate?.reloadData()
         dismiss(animated: true)
     }
     
