@@ -9,7 +9,8 @@ import UIKit
 
 final class TaskListViewController: UITableViewController {
     
-    private let viewContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    private let storageManager = StorageManager.shared
     
     private let cellID = "task"
     private var taskList: [Task] = []
@@ -19,14 +20,12 @@ final class TaskListViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         view.backgroundColor = .white
         setupNavigationBar()
-        reloadData()
+        fetchData()
     }
     
     @objc
     private func addNewTask() {
-        let taskVC = TaskViewController() // Создаем экземпляр класса, куда собираеся переходить
-        taskVC.delegate = self
-        present(taskVC, animated: true) // Метод презент есть у всех наследников UIViewController
+        showAlert(with: "New Task", and: "What do you want to do")
     }
 
 }
@@ -59,12 +58,46 @@ private extension TaskListViewController {
     }
     
     func fetchData() {
-        let request = Task.fetchRequest()
-        do {
-           taskList = try viewContext.fetch(request)
-        } catch {
-            print("Failed to fetch data", error)
+        storageManager.fetchData { tasks in
+            switch tasks {
+            case .success(let tasks):
+                taskList = tasks
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
+    }
+    
+    func showAlert(with title: String, and message: String) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let saveAction = UIAlertAction(
+            title: "Save Task",
+            style: .default) { [unowned self] _ in
+                guard let task = alert.textFields?.first?.text, !task.isEmpty else { return }
+                save(task)
+            }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        alert.addTextField { textField in
+            textField.placeholder = "NewTask"
+        }
+        
+        present(alert, animated: true)
+    }
+    
+    func save(_ taskName: String) {
+        storageManager.saveTask(taskName) { task in
+            taskList.append(task)
+        }
+        let indexPath = IndexPath(row: taskList.count - 1, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
     }
 }
 
@@ -92,21 +125,36 @@ extension TaskListViewController {
         
         if editingStyle == .delete {
             let object = taskList.remove(at: indexPath.row)
-            viewContext.delete(object)
-            do {
-                try viewContext.save()
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            } catch {
-                print(error)
-            }
-            
+            storageManager.deleteTask(object)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let task = taskList[indexPath.row]
+        showAlert(task: task) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 }
 
-extension TaskListViewController: ITaskViewController {
-    func reloadData() {
-        fetchData()
-        tableView.reloadData()
+// MARK: - Alert Controller
+extension TaskListViewController {
+    private func showAlert(task: Task? = nil, completion: (() -> Void)? = nil) {
+        let alertFactory = AlertControllerFactory(
+            userAction: task != nil ? .editTask : .newTask,
+            taskTitle: task?.title
+        )
+        let alert = alertFactory.createAlertController { [weak self] taskName in
+            if let task, let completion {
+                self?.storageManager.update(task, newName: taskName)
+                completion()
+                return
+            }
+            self?.save(taskName)
+        }
+        
+        present(alert, animated: true)
     }
 }
+
